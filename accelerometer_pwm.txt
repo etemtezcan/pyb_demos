@@ -1,0 +1,20 @@
+import pyb
+
+
+accel = pyb.Accel()
+
+light = pyb.LED(4)
+
+intensity = 0
+
+
+
+while True:
+    
+	y = accel.y()
+    
+	intensity = ((abs(y) + 1) * 4) % 255
+    
+	light.intensity(intensity)
+    
+	pyb.delay(50)
