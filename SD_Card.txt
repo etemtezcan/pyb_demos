@@ -1,0 +1,38 @@
+import pyb
+
+
+accel = pyb.Accel()
+
+light = pyb.LED(4)
+
+switch = pyb.Switch()
+
+
+
+while True:
+	
+	
+	if switch():
+		
+		pyb.delay(200)
+		
+		light.on()
+		
+		file = open('1:/log.csv', 'w')
+		
+		
+		while not switch():
+			
+			t = pyb.millis()
+			
+			x, y, z = accel.filtered_xyz()
+			
+			file.write('{},{},{},{}\n'.format(t,x,y,z))
+		
+		
+
+		file.close()
+		
+		light.off()
+		
+		pyb.delay(200)
