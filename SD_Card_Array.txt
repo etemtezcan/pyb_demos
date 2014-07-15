@@ -1,0 +1,63 @@
+# main.py -- put your code here!
+
+import pyb
+
+
+accel = pyb.Accel() # create object of accelerometer
+
+light = pyb.LED(4) # create object of blue LED
+
+light2 = pyb.LED(3)
+
+switch = pyb.Switch()
+
+
+tim_t = []
+
+accel_x = []
+
+accel_y = []
+
+accel_z = []
+
+
+
+while True:
+	
+	if switch():
+		
+		pyb.delay(200)
+		
+		light.on()
+		
+		file = open('0:/file.csv', 'w')
+		
+		while not switch():
+			
+			for a in range(0,1000):
+				
+				t = pyb.millis()
+				
+				x, y, z = accel.filtered_xyz()
+				
+				tim_t.append(t)
+				
+				accel_x.append(x)
+				
+				accel_y.append(y)
+				
+				accel_z.append(z)
+			
+			light2.on()
+			
+			for a in range(0,1000):
+				
+				file.write('{},{},{},{}\n'.format(tim_t[a],accel_x[a],accel_y[a],accel_z[a]))
+			
+			light2.off()
+		
+		file.close()
+		
+		light.off()
+		
+		pyb.delay(200)
