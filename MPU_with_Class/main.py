@@ -10,9 +10,12 @@ light = pyb.LED(4)
 switch = pyb.Switch()
 mpu.config_accelerometer(2)
 
-sens_x = 1000
-sens_y = 500
-sens_z = 17500
+eps_x = 250
+eps_y = 200
+eps_z = 1500
+norm_x = 450
+norm_y = -170
+norm_z = 16000
 acc_x = array('i',[])
 acc_y = array('i',[])
 acc_z = array('i',[])
@@ -25,7 +28,7 @@ while True:
         pyb.delay(200)
         vib_data = open('vib_data.csv', 'w')
         x, y, z = mpu.get_acc_values()
-        while ((abs(x) < sens_x) or (abs(y) < sens_y) or (abs(z) < sens_z)):
+        while ((abs(norm_x - x) < eps_x) or (abs(norm_y - y) < eps_y) or (abs(norm_z - z) < eps_z)):
             x, y, z = mpu.get_acc_values()
             pyb.delay(5)
         light.on()
