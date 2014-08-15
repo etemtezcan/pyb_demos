@@ -30,7 +30,6 @@ gyro_y = array('i',[])
 gyro_z = array('i',[])
 tim = array('i',[])
 i = 0
-aaa = 0
 
 def get_save():
     ax, ay, az = mpu.get_acc_values()
@@ -56,9 +55,9 @@ while True:
             pyb.delay(5)
         light.on()
         t0 = pyb.millis()
-        while (aaa < 1000):
+        while (i < 1000):
             get_save()
-            aaa += 1
+            i += 1
             light.toggle()
         light.off()
         while i>0:
