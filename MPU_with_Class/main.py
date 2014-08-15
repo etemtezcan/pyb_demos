@@ -30,6 +30,20 @@ gyro_y = array('i',[])
 gyro_z = array('i',[])
 tim = array('i',[])
 i = 0
+aaa = 0
+
+def get_save():
+    ax, ay, az = mpu.get_acc_values()
+    gx, gy, gz = mpu.get_gyro_values()
+    t1 = pyb.millis()
+    acc_x.append(ax)
+    acc_y.append(ay)
+    acc_z.append(az)
+    gyro_x.append(gx)
+    gyro_y.append(gy)
+    gyro_z.append(gz)
+    tim.append(t1-t0)
+    return
 
 while True:
     pyb.wfi()
@@ -42,19 +56,11 @@ while True:
             pyb.delay(5)
         light.on()
         t0 = pyb.millis()
-        while (i < 1000):
-            ax, ay, az = mpu.get_acc_values()
-            gx, gy, gz = mpu.get_gyro_values()
-            t1 = pyb.millis()
-            acc_x.append(ax)
-            acc_y.append(ay)
-            acc_z.append(az)
-            gyro_x.append(gx)
-            gyro_y.append(gy)
-            gyro_z.append(gz)
-            tim.append(t1-t0)
-            pyb.delay(1)
-            i += 1
+        while (aaa < 1000):
+            get_save()
+            aaa += 1
+            light.toggle()
+        light.off()
         while i>0:
             i -= 1
             a_x = acc_x[i]/16384
@@ -65,5 +71,4 @@ while True:
             g_z = (gyro_z[i]*250)/32768
             vib_data.write('{},{},{},{},{},{},{}\n'.format(tim[i],a_x,a_y,a_z,g_x,g_y,g_z))
         vib_data.close()
-        light.off()
         pyb.delay(200)
